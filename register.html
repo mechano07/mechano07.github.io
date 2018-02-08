@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"  content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/animate.css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,300,300i,400" rel="stylesheet">
+    <title>Register</title>
+    <script src="./js/angular.min.js"></script>
+    </head>
+<body ng-app="register" ng-controller="registerController">
+  <section class="registerForm">
+      <div class="row">
+          <h2>register</h2>
+          <div class="alert wow bounceInUp">Registered Successfully</div>
+          <div class="col s12 m8 l8">
+              <form id="registerFormItyukta" class="col s12">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <select id="workshop">
+                          <option value="ETH" style="color:#000" selected>Ethical Hacking</option>
+                          <option value="ML" style="color:#000" >Machine Learning</option>
+                        </select>
+                        <label>Workshop</label>
+                      </div>
+                </div>
+                  <div class="row">
+                    <div class="input-field col s12 m12 l12">
+                      <input  id="name" type="text" class="validate" required>
+                      <label for="name"><i class="material-icons">person</i>Name</label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="input-field form-control col s12 l12 m12">
+                      <input id="phoneNo" type="number" max="9999999999" class="validate" required>
+                      <label for="phoneNo"><i class="material-icons">phone</i>Phone</label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="input-field col s12 m12 l12">
+                      <input id="email" type="email" class="validate" required>
+                      <label for="email" data-error="" data-success="" required><i class="material-icons">email</i>Email</label>
+                    </div>
+                  </div>  
+                  <div class="row">
+                      <div class="input-field col s12">
+                          <select id="paymentMode">
+                            <option onclick="popPaytm()" value="paytm" style="color:#000" selected>Paytm</option>
+                            <option onclick="popPhonePe()" value="phonePe" style="color:#000" >Phone Pe</option>
+                            <option onclick="popTez()" value="tez" style="color:#000" >Google Tez</option>
+                          </select>
+                          <label>Payment Mode</label>
+                          <img onclick="popPhonePe()" id="phonePePopUp" class="imgBorder wow slideInUp" data-wow-delay="0.2s" src="./img/phonePe.png" alt="">
+                          <img onclick="popTez()" id="tezPopUp" class="imgBorder wow slideInUp" data-wow-delay="0.4s"  src="./img/tez.png" alt="">
+                          <img onclick="popPaytm()" id="paytmPopUp" class="imgBorder wow slideInUp" data-wow-delay="0.6s"src="./img/paytm.png" alt="">
+                        </div>
+                  </div>
+                  <div class="row">
+                    <div class="input-field col s12 m12 l12">
+                      <input id="trId" type="text" class="validate" required>
+                      <label for="trId" data-error="" data-success="" required><i class="material-icons">payment</i>Transaction Id</label>
+                    </div>
+                  </div> 
+                  <div class="row">
+                    <div class="col s12">
+                      <div class="input-field inline">
+                        <input type="submit" class="btn btn-primary" value="REGISTER" >
+                      </div>
+                      <a style="margin-left:20px;font-weight:600" class="waves-effect waves-light btn modal-trigger" href="#modal1">Note</a>
+                    </div>
+                  </div>
+                </form>
+          </div>
+          <div class="col s12 m4 l4">
+              <img id="imgPaytm" style="border-radius:10px" class=" pop responsive-img wow fadeInUp" style="height:500px;" src="./img/scan.jpg" alt="">
+              <img id="imgPhonePe" style="border-radius:10px" class=" pop responsive-img wow fadeInUp" style="height:500px" src="./img/scanPhonePe.png" alt="">
+              <img id="imgTez" style="border-radius:10px" class=" pop responsive-img wow fadeInUp" style="height:500px" src="./img/scanTez.png" alt="">
+          </div>
+        </div>
+  </section>
+  <section class="section-list">
+    <div class="container">
+      <h2>List Of Attendees</h2>
+     <p>Total number of attendees <b> {{totalAttendees}}</b> </p>  <br>
+      <p>Ethical Hacking Attendees <b>{{ehAttendees}}</b> </p>  <br>
+      <p> Machine Learning Attendees <b>{{mlAttendees}}</b> </p> 
+      <div class="row">
+        <div class=" input-field  col s5 l3 m3 offset-s7 offset-m9 offset-l9">
+          <input name="search" style="color:#000" ng-model="search" type="text">
+          <label  for="search"><i class="material-icons wow pulse " data-wow-iterations="infinite">search</i>Search</label>
+        </div>
+      </div>
+        <table class="responsive-table highlight">
+            <thead>
+              <tr>
+                  <th>Name</th>
+                  <th>Workshop</th>
+                  <th>Transaction ID</th>
+                  <th>Payment Status</th>
+                  <th>Registration ID</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat ="user in data | filter : search">
+                <td>{{user.name}}</td>                
+                <td>{{user.workshop}}</td>
+                <td>{{user.trId}}</td>
+                <td ng-if="user.status">verified</td>
+                <td ng-if="!user.status">Pending....</td>
+                <td >{{user.RegId}}</td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
+  </section>
+      <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    <script src="./js/wow.min.js"></script>
+     <script>
+        $(document).ready(function() {
+          Materialize.updateTextFields();
+          $('select').material_select();
+          $('.modal').modal();
+          document.querySelector('#imgPaytm').style.display = 'paytm';
+          document.querySelector('#imgPhonePe').style.display = 'none';
+          document.querySelector('#imgTez').style.display = 'none';
+        });
+        new WOW().init();
+        function popPhonePe(){
+          document.querySelector('#imgPaytm').style.display = 'none';
+          document.querySelector('#imgPhonePe').style.display = 'block';
+          document.querySelector('#imgTez').style.display = 'none';
+          this.addClass(' wow fadeInUp');
+        }
+        function popPaytm(){
+          document.querySelector('#imgPaytm').style.display = 'block';
+          document.querySelector('#imgPhonePe').style.display = 'none';
+          document.querySelector('#imgTez').style.display = 'none';
+          this.addClass(' wow fadeInUp');
+        }
+        function popTez(){
+          document.querySelector('#imgPaytm').style.display = 'none';
+          document.querySelector('#imgPhonePe').style.display = 'none';
+          document.querySelector('#imgTez').style.display = 'block';
+          this.addClass(' wow fadeInUp');
+        }
+
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.2/firebase.js"></script>
+    <script src="./js/app.js"></script>
+    <script src="https://cdn.firebase.com/libs/angularfire/2.3.0/angularfire.min.js"></script> 
+</body>
+</html>
+
+ <!-- Modal Structure -->
+ <div id="modal1" class="modal">
+   <div class="modal-content">
+     <h4>Terms And Conditions</h4>
+     <p>
+       Complete Registration is done only When Payment Is verified... <br>
+       If Payment is done..your status will be updated within 12 Hours...Dont Panic !!!  <br>
+       Check The List Of Attendees Below Of this page For your Details...
+     </p>
+   </div>
+   <div class="modal-footer">
+     <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+   </div>
+ </div>
